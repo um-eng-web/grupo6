@@ -1,4 +1,6 @@
 class Apostador
+    attr_accessor :email, :betESScoins, :name, :listaApostas
+
 	def initialize(email, betESScoins, name)
 		@email = email
 		@betESScoins = betESScoins
@@ -14,4 +16,35 @@ class Apostador
         
 	end
     
+    def verApostasAbertasUtilizador()
+        flag=false
+        for aposta in listaApostas
+            ainda = "Ainda nao aconteceu"
+            if aposta.status == ainda
+                aposta.viewAposta
+                flag=true
+            end
+        end
+
+        if(!flag)
+            puts("Não tem apostas abertas de momento")
+        end
+    end
+    
+    def verApostasFechadasUtilizador()
+        flag=false
+        for aposta in listaApostas
+            ainda = "Ainda nao aconteceu"
+            if aposta.status != ainda
+                aposta.viewAposta
+                flag=true
+            end
+        end
+        
+        if(!flag) 
+            puts("Não há apostas fechadas")
+        end
+
+    end
+
 end

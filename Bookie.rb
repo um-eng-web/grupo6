@@ -1,4 +1,5 @@
 class Bookie
+	attr_accessor :email, :name
 
 	def initialize(email, name)
 		@email = email
@@ -9,4 +10,6 @@ class Bookie
 		puts("Nome: #{@name}")
 		puts("Email: #{@email}")
 	end
+
+	
 end

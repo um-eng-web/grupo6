@@ -4,7 +4,9 @@ require_relative "Odd"
 class Aposta
     attr_accessor :apostador, :montante, :resultado, :oddFixada, :status
 	def initialize(apostador, montante=0, resultado, oddActual)
+        #ESSBet.totalMoney = ESSBet.totalMoney + montante
 		@apostador = apostador
+        #@apostador.betESScoins = @apostador.betESScoins - montante
 		@montante = montante
 		@resultado = resultado
 		@oddFixada = oddActual

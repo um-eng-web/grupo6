@@ -1,5 +1,8 @@
+require_relative 'Observer'
+
 class Bookie
 	attr_accessor :email, :name
+	include Observer
 
 	def initialize(email, name)
 		@email = email
@@ -11,5 +14,7 @@ class Bookie
 		puts("Email: #{@email}")
 	end
 
-	
+	def update(notificationBookie)
+		puts("Bookie #{@name}: #{notificationBookie}")
+	end
 end

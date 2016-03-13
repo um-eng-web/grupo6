@@ -1,6 +1,13 @@
+require_relative "Odd"
+require_relative "Apostador"
+require_relative "Subject"
+require_relative "Aposta"
+require_relative "Bookie"
+
 class Evento
+	attr_accessor :resultado, :equipa1, :equipa2, :dataEvento, :listaApostas, :isOpen, :odds, :id, :creatorEmail
+	include Subject
 	def initialize(equipa1="",equipa2="",dataEvento,bookie, id, odd, creatorEmail)
-		attr_accessor :resultado, :equipa1, :equipa2, :dataEvento, :listaApostas, :isOpen, :odds, :id, :creatorEmail
 		@equipa1, @equipa2, @dataEvento = equipa1, equipa2, dataEvento
 		@id = id
 		@resultado = 'Não aconteceu ainda'
@@ -41,6 +48,47 @@ class Evento
 		notifySubject("odd")
 		return true
 	end
+
+	def notify(sub)
+		fevento = "fevento"
+		odd = "odd"
+		if(sub==fevento)
+			for aposta in @listaApostas
+				premio = 0
+				if aposta.resultado == @resultado
+					if aposta.resultado == "1\n"
+						premio = aposta.montante * aposta.oddFixada.odd1
+						#imprimir premio que nao ta a dar certo
+					elsif aposta.resultado == "2\n"
+						premio = aposta.montante * aposta.oddFixada.odd2
+					elsif aposta.resultado == "X\n"
+						premio = aposta.montante * aposta.oddFixada.oddX	
+					end
+					aposta.status = "Won :("
+					aposta.viewAposta
+					puts("ola")
+					
+				else
+					aposta.status = "Lost :)"
+				end
+				aposta.apostador.updateObserver(premio)
+				aposta.apostador.betESScoins = aposta.apostador.betESScoins + premio
+			end
+			for bookie in @listaBookies
+				bookie.updateObserver("Evento #{id} fechou")
+			end
+
+		elsif (sub==odd)
+			for aposta in @listaApostas
+					aposta.apostador.updateObserver("As odds mudaram")
+			end
+			for bookie in @listaBookies
+				bookie.updateObserver("As odds mudaram")
+			end
+		end
+			
+	end
+
     
     def viewEvento
     	puts("ID: #{@id}")
@@ -58,6 +106,4 @@ class Evento
     	end
     end
 end
-
-
 

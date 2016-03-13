@@ -1,4 +1,6 @@
 class Odd
+	attr_accessor :odd1, :odd2, :oddX
+
 	def initialize(odd1, oddX, odd2)
 		@odd1 = odd1
 		@oddX = oddX

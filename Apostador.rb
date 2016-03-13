@@ -1,20 +1,23 @@
+require_relative 'Observer'
+
 class Apostador
     attr_accessor :email, :betESScoins, :name, :listaApostas
+    include Observer
 
-	def initialize(email, betESScoins, name)
-		@email = email
-		@betESScoins = betESScoins
-		@name = name
+    def initialize(email, betESScoins, name)
+        @email = email
+        @betESScoins = betESScoins
+        @name = name
         @listaApostas = Array.new()
         
-	end
+    end
 
-	def viewApostador()
-		puts("Nome: #{@name}")
-		puts("Coins: #{@betESScoins}")
-		puts("Email: #{@email}")
+    def viewApostador()
+        puts("Nome: #{@name}")
+        puts("Coins: #{@betESScoins}")
+        puts("Email: #{@email}")
         
-	end
+    end
     
     def verApostasAbertasUtilizador()
         flag=false
@@ -45,6 +48,10 @@ class Apostador
             puts("Não há apostas fechadas")
         end
 
+    end
+
+    def update(notification)
+        puts("Apostador: #{@name} ganhou #{notification}")
     end
 
 end

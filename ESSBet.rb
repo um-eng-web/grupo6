@@ -61,4 +61,36 @@ class ESSBet
 		end
 		return "NE"
 	end
+
+	def checkEventoAvailabeTcAoBet(id)
+		listaEventos = @eventos.values
+		for evento in listaEventos
+			if ((evento.id == id) && evento.isOpen)
+				return true
+			end
+		end
+		return false
+	end
+
+	def addApostador(email, nome, password)
+		apostador = Apostador.new(email,0,nome)
+		@users[apostador] = password
+	end
+
+	def addBookie(email, nome, password)
+		bookie = Bookie.new(email,nome)
+		@bookies[bookie] = password
+	end
+
+	def viewESSBet()
+		puts("Nome: #{@name}")
+		puts("Eventos: #{@eventos}")
+		puts("Dinheiro total: #{@totalMoney}")
+		puts("Users #{@users.keys}")
+		puts("Bookies #{bookies.keys}")
+	end
+
+	
+
+
 end

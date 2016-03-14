@@ -1,3 +1,9 @@
+require_relative "Apostador"
+require_relative "Bookie"
+require_relative "Odd"
+require_relative "Evento"
+require_relative "Aposta"
+
 class ESSBet
 	
 	attr_accessor :users, :bookies, :eventos, :name, :totalMoney, :id
@@ -90,7 +96,183 @@ class ESSBet
 		puts("Bookies #{bookies.keys}")
 	end
 
-	
+#######novo def registaAposta(apostador, evento)
+#
+	def actualizaOdd(id, odd1, odd2, oddX)
+		evento = findEvento(id)
+		evento.actualizaOdd(odd1,odd2,oddX)
+	end
+
+	def fechaEvento(id, resultado)
+		findEvento(id).fechaEvento(resultado)
+	end
+
+
+	def registaEvento(equipa1,equipa2,email, odd1, oddx, odd2)
+		listaBookies = bookies.keys
+		for bookie in listaBookies
+			
+			if bookie.email == email
+				@id = @id+1
+				time = Time.now
+				oddz = Odd.new(odd1, oddx, odd2)
+				evento = Evento.new(equipa1,equipa2,time,bookie,@id, oddz, email)
+				@eventos[@id] = evento
+			end
+		end
+		#inspect
+		#return evento
+	end
+
+	def subscribeEvento(email, id)
+		bookie = findBookie(email)
+		evento = findEvento(id)
+		evento.addBookie(bookie)
+	end
+
+
+	def deleteApostador(email)
+		#viewDelete
+		listaApostadores = users.keys
+		for apostador in listaApostadores
+			if apostador.email == email
+				@users.delete(apostador)
+			end
+		end
+	end
+
+	def verificaPassApostador(email, pass)
+		listaApostadores = users.keys
+		for apostador in listaApostadores
+			if apostador.email == email
+				return pass == @users[apostador]
+			end
+		end
+	end
+
+	def verificaPassBookie(email, pass)
+		listaBookies = bookies.keys
+		for bookie in listaBookies
+			if bookie.email == email
+				return pass == @bookies[bookie]
+			end
+		end
+	end
+
+	def printEventList()
+		listaEventos = @eventos.values
+
+		for evento in listaEventos
+			if evento.isOpen
+				evento.viewEvento
+			end
+		end
+
+	end
+
+	def printOpenedBetsFromUser(email)
+		listaApostadores = users.keys
+		for apostador in listaApostadores
+			if apostador.email == email
+				apostador.verApostasAbertasUtilizador()
+			end
+		end
+	end
+
+	def printClosedBetsFromUser(email)
+		listaApostadores = users.keys
+		for apostador in listaApostadores
+			if apostador.email == email
+				apostador.verApostasFechadasUtilizador()
+			end
+		end
+	end
+
+	def printCoins(email)
+		listaApostadores = users.keys
+		for apostador in listaApostadores
+			if apostador.email == email
+				saldo = apostador.betESScoins
+				puts("Coins: #{saldo}")
+			end
+		end
+	end
+
+	def betting(email, id, montante, resultado)
+		listaApostadores = users.keys
+		for apostador in listaApostadores
+			if apostador.email == email
+				oddFixada = @eventos[id].odds.clone
+
+				aposta = Aposta.new(apostador, montante, resultado, oddFixada)
+				@eventos[id].registaAposta(aposta)
+				apostador.betESScoins = apostador.betESScoins - montante
+				apostador.listaApostas.push(aposta)
+			end
+		end
+	end
+
+	def depositar(email,montante)
+		apostador=findApostador(email)
+		if(!(apostador=="NE"))
+			apostador.betESScoins= apostador.betESScoins + montante
+		end
+	end
+
+	def apagaApostador(email)
+		apostador=findApostador(email)
+		if(!(apostador=="NE"))
+			@users.delete(apostador)
+		end
+	end
+
+	def apagaBookie(email)
+		bookie=findBookie(email)
+		if(!(bookie=="NE"))
+			@bookies.delete(bookie)
+		end
+	end
+
+	def myEvents(email)
+		listaEventos = @eventos.values
+		if(listaEventos.empty?) 
+			puts ("Não criou nenhum evento ainda")
+		else
+			for evento in listaEventos
+				if(evento.creatorEmail == email) 
+					evento.viewEvento()
+				end
+			end
+		end
+	end
 
 
 end
+
+
+##testes
+
+#casa = ESSBet.new("BetESS")
+#puts casa.verificaPassApostador("josehotmail","qwertyo")
+#casa.addBookie("bruno","asas")
+#casa.viewESSBet()
+#casa.addApostador("jose@","José Pedro Apostador","abc")
+#apostador = casa.findApostador("jose@")
+
+#apostador.viewApostador()
+#casa.depositar("jose@",20)
+#apostador.viewApostador()
+
+#casa.addBookie("jose@email.com","Jose Master Bookie","123")
+#casa.registaEvento("Benfica","Porto","jose@email.com",1.5,2.0,4.0)
+#casa.printEventList
+#casa.depositar("jose@",10)
+#casa.betting("jose@",1,10,"1")
+
+#casa.printOpenedBetsFromUser("jose@")
+
+#evento = casa.findEvento(1)
+#evento.viewEvento()
+
+
+

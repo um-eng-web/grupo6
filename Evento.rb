@@ -5,11 +5,12 @@ require_relative "Aposta"
 require_relative "Bookie"
 
 class Evento
-	attr_accessor :resultado, :equipa1, :equipa2, :dataEvento, :listaApostas, :isOpen, :odds, :id, :creatorEmail
+	attr_accessor :resultado, :equipa1, :equipa2, :dataEvento, :listaApostas, :isOpen, :odds, :id, :creatorEmail, :ttMoney
 	include Subject
 	def initialize(equipa1="",equipa2="",dataEvento,bookie, id, odd, creatorEmail)
 		@equipa1, @equipa2, @dataEvento = equipa1, equipa2, dataEvento
 		@id = id
+		@ttMoney = 0;
 		@resultado = 'Não aconteceu ainda'
 		@dataEvento = dataEvento
 		@listaApostas = Array.new()
@@ -58,7 +59,6 @@ class Evento
 				if aposta.resultado == @resultado
 					if aposta.resultado == "1\n"
 						premio = aposta.montante * aposta.oddFixada.odd1
-						#imprimir premio que nao ta a dar certo
 					elsif aposta.resultado == "2\n"
 						premio = aposta.montante * aposta.oddFixada.odd2
 					elsif aposta.resultado == "X\n"
@@ -70,6 +70,7 @@ class Evento
 					
 				else
 					aposta.status = "Lost :)"
+					@ttMoney = @ttMoney+aposta.montante
 				end
 				aposta.apostador.updateObserver(premio)
 				aposta.apostador.betESScoins = aposta.apostador.betESScoins + premio

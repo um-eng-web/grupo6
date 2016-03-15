@@ -103,8 +103,12 @@ class ESSBet
 		evento.actualizaOdd(odd1,odd2,oddX)
 	end
 
+
+##3###3##############
 	def fechaEvento(id, resultado)
 		findEvento(id).fechaEvento(resultado)
+		@totalMoney = @totalMoney+findEvento(id).ttMoney
+		puts("Total Money: #{@totalMoney}")
 	end
 
 

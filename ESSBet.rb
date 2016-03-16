@@ -248,31 +248,3 @@ class ESSBet
 
 
 end
-
-
-##testes
-
-#casa = ESSBet.new("BetESS")
-#puts casa.verificaPassApostador("josehotmail","qwertyo")
-#casa.addBookie("bruno","asas")
-#casa.viewESSBet()
-#casa.addApostador("jose@","José Pedro Apostador","abc")
-#apostador = casa.findApostador("jose@")
-
-#apostador.viewApostador()
-#casa.depositar("jose@",20)
-#apostador.viewApostador()
-
-#casa.addBookie("jose@email.com","Jose Master Bookie","123")
-#casa.registaEvento("Benfica","Porto","jose@email.com",1.5,2.0,4.0)
-#casa.printEventList
-#casa.depositar("jose@",10)
-#casa.betting("jose@",1,10,"1")
-
-#casa.printOpenedBetsFromUser("jose@")
-
-#evento = casa.findEvento(1)
-#evento.viewEvento()
-
-
-

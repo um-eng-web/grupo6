@@ -15,6 +15,7 @@ class Bookie
 	end
 
 	def update(notificationBookie)
-		puts("Bookie #{@name}: #{notificationBookie}")
+		puts("Bookie: #{@name}#{notificationBookie}")
+		puts("\n");
 	end
 end

@@ -14,6 +14,7 @@ class Menus
 		puts("3-Apagar conta")
 		puts("0-Sair")
 		escolha = gets.to_i
+		puts("\n")
 
 		if(escolha==1) 
 			menuLogin()
@@ -35,8 +36,8 @@ class Menus
 		puts("2-Bookie")
 		puts("3-Retroceder")
 		puts("0-Sair")
-
 		escolha = gets.to_i
+		puts("\n")
 
 		if(escolha==1) 
 			menuLoginApostador()
@@ -78,6 +79,7 @@ class Menus
 
 		puts("Login com sucesso!")
 		menuApostador(email)
+		puts("\n")
 	end
 
 	def menuLoginBookie()
@@ -113,9 +115,9 @@ class Menus
 		puts("1-Apostador")
 		puts("2-Bookie")
 		puts("3-Retroceder")
-		puts("0-Sair")
-		
+		puts("0-Sair")	
 		escolha = gets.to_i
+		puts("\n")
 		
 		if(escolha==1) 
 			menuRegistaApostador()
@@ -162,6 +164,7 @@ class Menus
 
 		@BetESS.addApostador(email,nome,pass1)
 		puts("Conta de Apostador criada com sucesso\n\n")
+		puts("\n")
 		menuInicial()
 
 	end 
@@ -198,6 +201,7 @@ class Menus
 		@BetESS.addBookie(email,nome,pass1)
 		puts("Conta de Bookie criada com sucesso\n\n")
 		menuInicial()
+		puts("\n")
 		
 	end 
 
@@ -207,8 +211,8 @@ class Menus
 		puts("2-Bookie")
 		puts("3-Retroceder")
 		puts("0-Sair")
-
 		escolha = gets.to_i
+		puts("\n")
 
 		if(escolha==1) 
 			menuApagarApostador()
@@ -250,6 +254,7 @@ class Menus
 		@BetESS.apagaApostador(email)
 		puts("Conta apagada com sucesso! :(")
 		menuInicial()
+		puts("\n")
 	end
 
 	def menuApagarBookie()
@@ -278,6 +283,7 @@ class Menus
 		@BetESS.apagaBookie(email)
 		puts("Conta apagada com sucesso! :(")
 		menuInicial()
+		puts("\n")
 	end
 
 	def menuApostador(email)
@@ -290,8 +296,8 @@ class Menus
 		puts("6-Apostar")
 		puts("7-Retroceder")
 		puts("0-Sair")
-
 		escolha = gets.to_i
+		puts("\n")
 
 		if(escolha==1) 
 			@BetESS.printEventList()
@@ -352,9 +358,11 @@ class Menus
 			@BetESS.betting(email,id,montante,resultado)	
 			puts("Aposta colocada com sucesso !")
 			menuApostador(email)
+			puts("\n")
 		else
 			puts("SALDO INSUFICIENTE! Por favor realize um depósito para poder efetuar essa asposta")
 			menuApostador(email)
+			puts("\n")
 		end
 	end
 
@@ -368,8 +376,8 @@ class Menus
 		puts("6-Alterar Odds de um evento")
 		puts("7-Retroceder")
 		puts("0-Sair")
-
 		escolha = gets.to_i
+		puts("\n")
 
 		if(escolha==1) 
 			@BetESS.printEventList()
@@ -460,8 +468,13 @@ end
 
 ##Executar
 menu= Menus.new()
-menu.BetESS.addApostador("bruno@\n","Bruno Super Apostador","abc\n")
-menu.BetESS.addBookie("jose@\n","Jose Master Bookie","123\n")
+menu.BetESS.addApostador("bruno@\n","Bruno Super Apostador\n","123\n")
+menu.BetESS.addApostador("barak@\n","Barak Oboma\n","123\n")
+
+menu.BetESS.addBookie("jose@\n","Jose Master Bookie\n","123\n")
+menu.BetESS.addBookie("cr7@\n","Cristiano Reinaldo\n","123\n")
+
 menu.BetESS.registaEvento("Benfica","Porto","jose@\n",1.5,2.0,4.0)
-#menu.BetESS.printEventList()
+menu.BetESS.registaEvento("Braga","Guimaraes","cr7@\n",1.25,2.2,3.76)
+menu.BetESS.registaEvento("Rio Ave","Estoril","jose@\n",1.45,3.5,6.74)
 menu.menuInicial()

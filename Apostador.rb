@@ -51,7 +51,13 @@ class Apostador
     end
 
     def update(notification)
-        puts("Apostador: #{@name} ganhou #{notification}")
+        if(notification=="fevento")
+            puts("Apostador: #{@name} Ganhou #{notification}\n")
+            puts("\n");
+        else
+            puts("Apostador: #{@name}#{notification}")
+            puts("\n");
+        end
     end
 
 end

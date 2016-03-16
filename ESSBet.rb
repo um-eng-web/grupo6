@@ -11,9 +11,9 @@ class ESSBet
 	def initialize(name="Bet House")
 		@totalMoney = 10000.0
 		@name = name 
-		@users = Hash.new('User não existe')
-		@bookies = Hash.new('Bookie não existe')
-		@eventos = Hash.new('Evento não existe')
+		@users = Hash.new()
+		@bookies = Hash.new()
+		@eventos = Hash.new()
 		@id = 0
 
 	end
@@ -96,19 +96,14 @@ class ESSBet
 		puts("Bookies #{bookies.keys}")
 	end
 
-#######novo def registaAposta(apostador, evento)
-#
 	def actualizaOdd(id, odd1, odd2, oddX)
 		evento = findEvento(id)
 		evento.actualizaOdd(odd1,odd2,oddX)
 	end
 
-
-##3###3##############
 	def fechaEvento(id, resultado)
 		findEvento(id).fechaEvento(resultado)
 		@totalMoney = @totalMoney+findEvento(id).ttMoney
-		puts("Total Money: #{@totalMoney}")
 	end
 
 
@@ -124,8 +119,6 @@ class ESSBet
 				@eventos[@id] = evento
 			end
 		end
-		#inspect
-		#return evento
 	end
 
 	def subscribeEvento(email, id)
@@ -136,7 +129,6 @@ class ESSBet
 
 
 	def deleteApostador(email)
-		#viewDelete
 		listaApostadores = users.keys
 		for apostador in listaApostadores
 			if apostador.email == email
@@ -164,14 +156,18 @@ class ESSBet
 	end
 
 	def printEventList()
+		boolean = false
 		listaEventos = @eventos.values
-
 		for evento in listaEventos
 			if evento.isOpen
+				boolean=true
 				evento.viewEvento
 			end
 		end
 
+		if(!boolean)
+			puts("Não há eventos disponiveis")
+		end
 	end
 
 	def printOpenedBetsFromUser(email)
@@ -207,8 +203,7 @@ class ESSBet
 		for apostador in listaApostadores
 			if apostador.email == email
 				oddFixada = @eventos[id].odds.clone
-
-				aposta = Aposta.new(apostador, montante, resultado, oddFixada)
+				aposta = Aposta.new(@eventos[id].id, @eventos[id].equipa1, @eventos[id].equipa2, apostador, montante, resultado, oddFixada, Time.now)
 				@eventos[id].registaAposta(aposta)
 				apostador.betESScoins = apostador.betESScoins - montante
 				apostador.listaApostas.push(aposta)
@@ -238,15 +233,16 @@ class ESSBet
 	end
 
 	def myEvents(email)
+		boolean = false
 		listaEventos = @eventos.values
-		if(listaEventos.empty?) 
-			puts ("Não criou nenhum evento ainda")
-		else
-			for evento in listaEventos
-				if(evento.creatorEmail == email) 
-					evento.viewEvento()
-				end
+		for evento in listaEventos
+			if(evento.creatorEmail == email) 
+				boolean = true
+				evento.viewEvento()
 			end
+		end
+		if(!boolean) 
+			puts("Ainda não criou eventos")
 		end
 	end
 

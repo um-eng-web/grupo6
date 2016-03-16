@@ -66,25 +66,26 @@ class Evento
 					end
 					aposta.status = "Won :("
 					aposta.viewAposta
-					puts("ola")
 					
 				else
 					aposta.status = "Lost :)"
+					aposta.viewAposta
 					@ttMoney = @ttMoney+aposta.montante
 				end
-				aposta.apostador.updateObserver(premio)
+				aposta.apostador.updateObserver("#{premio} coins no evento #{@id}")
 				aposta.apostador.betESScoins = aposta.apostador.betESScoins + premio
 			end
+
 			for bookie in @listaBookies
-				bookie.updateObserver("Evento #{id} fechou")
+				bookie.updateObserver("Evento #{@id} - Fechou")
 			end
 
 		elsif (sub==odd)
 			for aposta in @listaApostas
-					aposta.apostador.updateObserver("As odds mudaram")
+					aposta.apostador.updateObserver("Evento #{@id} - As odds mudaram")
 			end
 			for bookie in @listaBookies
-				bookie.updateObserver("As odds mudaram")
+				bookie.updateObserver("Evento #{@id} - As odds mudaram")
 			end
 		end
 			
@@ -92,13 +93,15 @@ class Evento
 
     
     def viewEvento
+    	puts("EVENTO:")
     	puts("ID: #{@id}")
         puts("Casa: #{@equipa1}")
         puts("Fora: #{@equipa2}")
         odds.viewOdd()
         puts("Resultado: #{@resultado}")
         puts("Data criação: #{@dataEvento}")
-        puts("Bookie responsável: #{@creatorEmail}")   
+        puts("Bookie responsável: #{@creatorEmail}")
+        puts()   
     end
 
     def viewApostas
